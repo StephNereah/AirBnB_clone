@@ -21,8 +21,10 @@ class TestBaseModel(unittest.TestCase):
         self.assertIsInstance(my_model_dict, dict)
         self.assertEqual(my_model_dict["__class__"], "BaseModel")
         self.assertEqual(my_model_dict["id"], my_model.id)
-        self.assertEqual(my_model_dict["created_at"], my_model.created_at.isoformat())
-        self.assertEqual(my_model_dict["updated_at"], my_model.updated_at.isoformat())
+        self.assertEqual(
+                my_model_dict["created_at"], my_model.created_at.isoformat())
+        self.assertEqual(
+                my_model_dict["updated_at"], my_model.updated_at.isoformat())
 
     def test_save(self):
         my_model = BaseModel()
@@ -44,7 +46,8 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(my_model.id, my_new_model.id)
         self.assertEqual(my_model.created_at, my_new_model.created_at)
         self.assertEqual(my_model.updated_at, my_new_model.updated_at)
-        self.assertEqual(my_model_dict['__class__'], my_new_model.__class__.__name__)
+        self.assertEqual(
+                my_model_dict['__class__'], my_new_model.__class__.__name__)
 
 
 if __name__ == '__main__':
