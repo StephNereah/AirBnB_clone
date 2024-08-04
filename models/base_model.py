@@ -8,27 +8,32 @@ import uuid
 
 class BaseModel:
     def __init__(self):
+        """
+        Initialize a new BaseModel instance.
+        """
         self.id = str(uuid.uuid4())
-        self.created_at = datetime.now()
+        self.created_at = datetime.utcnow()
         self.updated_at = self.created_at
         
     def __str__(self):
         """
-         string - assign with an uuid when an instance is created:
-         datetime -assign with the current datetime when an instance is created
-         it will be updated every time you change your object
+        Return a string representation of the instance.
+        Format: [<class name>] (<self.id>) <self.__dict__>
         """
-        return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
+        classname = self.__class__.__name__
+        return "[{}] ({}) {}".format(classname, self.id, self.__dict__)
     
     def save(self):
         """
-        updates the public instance attribute updated_at with current datetime
+        Updates the public instance attribute updated_at with current datetime
         """
-        self.updated_at = datetime.now()
+        self.updated_at = datetime.utcnow()
         
     def to_dict(self):
         """
-        returns a dictionary containing all keys/values of __dict__ of instance
+        Return a dictionary containing all keys/values of __dict__ of the instance.
+        Add a __class__ key with the class name of the object.
+        Convert created_at and updated_at to string objects in ISO format.
         """
         dict_copy = self.__dict__.copy()
         dict_copy['__class__'] = self.__class__.__name__
