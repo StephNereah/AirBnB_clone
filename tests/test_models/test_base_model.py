@@ -7,6 +7,8 @@ from models.base_model import BaseModel
 class TestBaseModel(unittest.TestCase):
     def setUp(self):
         self.model = BaseModel()
+        self.model.name = "My First Model"
+        self.model.my_number = 89
 
     def test_id(self):
         self.assertIsInstance(self.model.id, str)
@@ -40,6 +42,26 @@ class TestBaseModel(unittest.TestCase):
         self.assertIsInstance(model_dict['updated_at'], str)
         self.assertEqual(model_dict['created_at'], self.model.created_at.isoformat())
         self.assertEqual(model_dict['updated_at'], self.model.updated_at.isoformat())
+
+    def test_init_with_kwargs(self):
+        model_dict = self.model.to_dict()
+        new_model = BaseModel(**model_dict)
+        self.assertEqual(new_model.id, self.model.id)
+        self.assertEqual(new_model.created_at.isoformat(), self.model.created_at.isoformat())
+        self.assertEqual(new_model.updated_at.isoformat(), self.model.updated_at.isoformat())
+        self.assertEqual(new_model.name, self.model.name)
+        self.assertEqual(new_model.my_number, self.model.my_number)
+        self.assertEqual(new_model.__class__.__name__, 'BaseModel')
+
+    def test_dict_conversion_with_datetime(self):
+        """
+        Test that created_at and updated_at are converted back to datetime
+        """
+        self.model.save()
+        model_dict = self.model.to_dict()
+        new_model = BaseModel(**model_dict)
+        self.assertIsInstance(new_model.created_at, datetime)
+        self.assertIsInstance(new_model.updated_at, datetime)
 
 
 if __name__ == '__main__':
